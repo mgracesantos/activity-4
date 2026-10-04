@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+<section class="wrap narrow">
+  <h1>Let's talk, I'm Grace</h1>
+  <p class="lede">The quickest way to reach me is by email.</p>
+  <div class="list">
+    <div class="row"><span>Email</span><a href="mailto:{{ me.email }}">{{ me.email }}</a></div>
+    <div class="row"><span>Phone</span><a href="tel:{{ me.phone }}">{{ me.phone }}</a></div>
+    <div class="row"><span>Location</span><b>{{ me.location }}</b></div>
+    <div class="row"><span>GitHub</span><a href="{{ me.github }}" target="_blank" rel="noopener">{{ me.github }}</a></div>
+    <div class="row"><span>Facebook</span><a href="{{ me.facebook }}" target="_blank" rel="noopener">{{ me.facebook }}</a></div>
+    {% if me.linkedin %}<div class="row"><span>LinkedIn</span><a href="{{ me.linkedin }}" target="_blank" rel="noopener">{{ me.linkedin }}</a></div>{% endif %}
+  </div>
+  <button class="btn primary" id="copy" data-copy="{{ me.email }}">Copy email address</button>
+</section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Linked list{% endblock %}
+{% block content %}
+<section class="wrap">
+  <h1>Programming works</h1>
+  {% include "_worktabs.html" %}
+
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<div class="toast {{ cat }}" role="status">{{ m }}</div>{% endfor %}
+  {% endwith %}
+
+  <div class="card">
+    <h2>Your list <small class="muted">({{ size }} node{{ '' if size == 1 else 's' }})</small></h2>
+    <div class="chain">
+      <span class="ptr">head</span>
+      {% for it in items %}
+        <div class="node {{ 'hit' if found == loop.index0 }}"><b>{{ it }}</b><i>{{ loop.index0 }}</i></div>
+        <span class="arrow">&rarr;</span>
+      {% else %}
+        <span class="muted">The list is empty. Add a node below.</span>
+      {% endfor %}
+      {% if items %}<span class="null">None</span>{% endif %}
+    </div>
+  </div>
+
+  <div class="card tool">
+    <form method="post" class="ll-form">
+      <div class="two">
+        <div><label for="value">Value</label><input id="value" name="value" placeholder="e.g. Django"></div>
+        <div><label for="index">Position (for insert at)</label><input id="index" name="index" type="number" placeholder="e.g. 1"></div>
+      </div>
+      <div class="btns">
+        <button class="btn primary" name="action" value="head">Add to head</button>
+        <button class="btn primary" name="action" value="tail">Add to tail</button>
+        <button class="btn" name="action" value="at">Insert at position</button>
+        <button class="btn" name="action" value="search">Search</button>
+        <button class="btn" name="action" value="delete">Delete value</button>
+        <button class="btn" name="action" value="reverse">Reverse</button>
+        <button class="btn danger" name="action" value="clear">Clear all</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

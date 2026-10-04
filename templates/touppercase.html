@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Works{% endblock %}
+{% block content %}
+<section class="wrap narrow">
+  <h1>Programming works</h1>
+  {% include "_worktabs.html" %}
+  <div class="card tool">
+    <h2>Convert text to uppercase</h2>
+    <form method="post">
+      <label for="inputString">Your text</label>
+      <input id="inputString" name="inputString" value="{{ original }}" placeholder="Type something" autofocus>
+      <button class="btn primary">Convert to uppercase</button>
+    </form>
+    {% if result is not none %}<div class="result"><span>Result</span><strong>{{ result or 'Nothing was typed.' }}</strong></div>{% endif %}
+  </div>
+</section>
+{% endblock %}

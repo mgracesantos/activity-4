@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Area of triangle{% endblock %}
+{% block content %}
+<section class="wrap narrow">
+  <h1>Programming works</h1>
+  {% include "_worktabs.html" %}
+  <div class="card tool">
+    <h2>Area of a triangle</h2>
+    <p class="muted">Formula: &frac12; &times; base &times; height</p>
+    <form method="post">
+      <div class="two">
+        <div><label for="base">Base</label>
+        <input id="base" name="base" type="number" step="any" min="0" value="{{ base }}" placeholder="e.g. 8" required autofocus></div>
+        <div><label for="height">Height</label>
+        <input id="height" name="height" type="number" step="any" min="0" value="{{ height }}" placeholder="e.g. 3" required></div>
+      </div>
+      <button class="btn primary">Calculate area</button>
+    </form>
+    {% if error %}<div class="result bad">{{ error }}</div>{% endif %}
+    {% if result is not none %}<div class="result"><span>Area</span><strong>{{ result }}</strong></div>{% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% set ep = request.endpoint %}
+<div class="tabs" role="tablist">
+  <a href="{{ url_for('works') }}" class="{{ 'on' if ep == 'works' }}">Uppercase</a>
+  <a href="{{ url_for('acircle') }}" class="{{ 'on' if ep == 'acircle' }}">Area of circle</a>
+  <a href="{{ url_for('atriangle') }}" class="{{ 'on' if ep == 'atriangle' }}">Area of triangle</a>
+  <a href="{{ url_for('linkedlist') }}" class="{{ 'on' if ep == 'linkedlist' }}">Linked list</a>
+</div>

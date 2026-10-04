@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ me.nick }}{% endblock %} | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="{{ url_for('index') }}"><span class="mark"></span>{{ me.nick }}</a>
+    <button class="burger" aria-label="Toggle menu" aria-expanded="false">Menu</button>
+    <nav id="menu">
+      {% set ep = request.endpoint %}
+      <a href="{{ url_for('index') }}" class="{{ 'on' if ep == 'index' }}">Home</a>
+      <a href="{{ url_for('profile') }}" class="{{ 'on' if ep == 'profile' }}">Profile</a>
+      <a href="{{ url_for('works') }}" class="{{ 'on' if ep in ('works','acircle','atriangle','linkedlist') }}">Works</a>
+      <a href="{{ url_for('contact') }}" class="{{ 'on' if ep == 'contact' }}">Contact</a>
+    </nav>
+  </header>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="foot">
+    <span>{{ me.name }}</span>
+    <span>Built with Flask</span>
+  </footer>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

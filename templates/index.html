@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <p class="role">Hi, I'm</p>
+    <h1>{{ me.nick }}</h1>
+    <p class="fullname">{{ me.name }} &middot; {{ me.role }}</p>
+    <p class="lede">{{ me.tagline }}</p>
+    <div class="actions">
+      <a class="btn primary" href="{{ url_for('works') }}">See my works</a>
+      <a class="btn" href="{{ url_for('profile') }}">Read my profile</a>
+    </div>
+  </div>
+  <div class="shapes" aria-hidden="true">
+    <div class="s-circle"></div>
+    <div class="s-tri"></div>
+    <div class="s-ring"></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Where to next</h2>
+  <div class="grid4">
+    <a class="card link" href="{{ url_for('profile') }}"><h3>Profile</h3><p>Who I am, what I study and what I use.</p></a>
+    <a class="card link" href="{{ url_for('works') }}"><h3>Works</h3><p>Four small programs you can try right here.</p></a>
+    <a class="card link" href="{{ url_for('linkedlist') }}"><h3>Linked list</h3><p>Add, find, delete and reverse nodes visually.</p></a>
+    <a class="card link" href="{{ url_for('contact') }}"><h3>Contact</h3><p>Email, phone and where to find me online.</p></a>
+  </div>
+</section>
+{% endblock %}

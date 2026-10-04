@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Area of circle{% endblock %}
+{% block content %}
+<section class="wrap narrow">
+  <h1>Programming works</h1>
+  {% include "_worktabs.html" %}
+  <div class="card tool">
+    <h2>Area of a circle</h2>
+    <p class="muted">Formula: &pi; &times; r &times; r</p>
+    <form method="post">
+      <label for="radius">Radius</label>
+      <input id="radius" name="radius" type="number" step="any" min="0" value="{{ radius }}" placeholder="e.g. 5" required autofocus>
+      <button class="btn primary">Calculate area</button>
+    </form>
+    {% if error %}<div class="result bad">{{ error }}</div>{% endif %}
+    {% if result is not none %}<div class="result"><span>Area</span><strong>{{ result }}</strong></div>{% endif %}
+  </div>
+</section>
+{% endblock %}
