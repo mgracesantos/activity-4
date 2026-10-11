@@ -1,4 +1,5 @@
 import math
+import re
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
@@ -96,6 +97,80 @@ def atriangle():
             error = "Enter a base and a height that are numbers of 0 or more."
     return render_template("triangle.html", result=result, error=error, base=base, height=height)
 
+
+# ---------------- Infix to postfix (stack) ----------------
+PRECEDENCE = {"+": 1, "-": 1, "*": 2, "/": 2, "^": 3}
+
+
+def infix_to_postfix(expr):
+    """Uses a stack for operators and a string for the output."""
+    expr = expr.strip()
+    if not expr:
+        raise ValueError("Type an infix expression first, for example A+B*C.")
+    if re.search(r"[^A-Za-z0-9_.+\-*/^()\s]", expr):
+        raise ValueError("Only letters, numbers, + - * / ^ and brackets are allowed.")
+
+    tokens = re.findall(r"[A-Za-z0-9_.]+|[-+*/^()]", expr)
+    ops = []          # operator stack
+    output = ""       # output as a plain string
+    steps = []
+    expect_operand = True
+
+    def log(token, action):
+        steps.append({"token": token, "action": action,
+                      "ops": " ".join(ops) or "(empty)", "output": output.strip() or "(empty)"})
+
+    for tok in tokens:
+        if tok == "(":
+            if not expect_operand:
+                raise ValueError("An operator is missing before '('.")
+            ops.append(tok)
+            log(tok, "Push '(' onto ops")
+        elif tok == ")":
+            if expect_operand:
+                raise ValueError("There is an operator or nothing before ')'.")
+            while ops and ops[-1] != "(":
+                output += ops.pop() + " "
+            if not ops:
+                raise ValueError("There is a ')' without a matching '('.")
+            ops.pop()
+            log(tok, "Pop operators until '(', then discard '('")
+        elif tok in PRECEDENCE:
+            if expect_operand:
+                raise ValueError(f"The operator '{tok}' has no operand before it.")
+            while ops and ops[-1] != "(" and PRECEDENCE[ops[-1]] >= PRECEDENCE[tok]:
+                output += ops.pop() + " "
+            ops.append(tok)
+            expect_operand = True
+            log(tok, f"Pop higher/equal precedence, push '{tok}'")
+        else:
+            if not expect_operand:
+                raise ValueError(f"An operator is missing before '{tok}'.")
+            output += tok + " "
+            expect_operand = False
+            log(tok, "Operand, add to output")
+
+    if expect_operand:
+        raise ValueError("The expression cannot end with an operator or '('.")
+    while ops:
+        top = ops.pop()
+        if top == "(":
+            raise ValueError("There is a '(' without a matching ')'.")
+        output += top + " "
+    log("end", "Pop remaining operators to output")
+    return output.strip(), steps
+
+
+@app.route("/works/infix", methods=["GET", "POST"])
+def infix():
+    expr = request.form.get("expression", "") if request.method == "POST" else ""
+    postfix, steps, error = None, [], None
+    if request.method == "POST":
+        try:
+            postfix, steps = infix_to_postfix(expr)
+        except ValueError as e:
+            error = str(e)
+    return render_template("infix.html", expression=expr, postfix=postfix, steps=steps, error=error)
 
 # ---------------- Linked list ----------------
 class Node:

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Infix to postfix{% endblock %}
+{% block content %}
+<section class="wrap">
+  <h1>Programming works</h1>
+  {% include "_worktabs.html" %}
+  <div class="card tool">
+    <h2>Infix to postfix</h2>
+    <p class="muted">Uses a stack for operators. Supports + - * / ^ and brackets.</p>
+    <form method="post">
+      <label for="expression">Infix expression</label>
+      <input id="expression" name="expression" value="{{ expression }}" placeholder="e.g. (A+B)*C-D/E" autofocus autocomplete="off">
+      <button class="btn primary">Convert to postfix</button>
+    </form>
+    {% if error %}<div class="result bad">{{ error }}</div>{% endif %}
+    {% if postfix %}<div class="result"><span>Postfix</span><strong>{{ postfix }}</strong></div>{% endif %}
+  </div>
+
+  {% if steps %}
+  <div class="card">
+    <h2>How it got there</h2>
+    <div class="scroll">
+    <table class="steps">
+      <thead><tr><th>Token</th><th>What happened</th><th>Ops stack (bottom to top)</th><th>Output</th></tr></thead>
+      <tbody>
+      {% for s in steps %}
+        <tr><td><b>{{ s.token }}</b></td><td>{{ s.action }}</td><td>{{ s.ops }}</td><td>{{ s.output }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -113,3 +113,9 @@ input:focus{border-color:var(--amber);outline:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .fullname{color:var(--muted);margin:.8rem 0 0;max-width:40ch}
+
+.scroll{overflow-x:auto}
+.steps{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.95rem}
+.steps th,.steps td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--line)}
+.steps th{color:var(--muted);font-weight:600}
+.steps td:nth-child(3),.steps td:nth-child(4){font-family:Consolas,monospace;color:var(--mint)}
