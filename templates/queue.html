@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Queue Data Structure</h1>
+
+    <p>
+        A queue follows the FIFO principle:
+        First In, First Out.
+    </p>
+
+    <hr>
+
+    <h2>Enqueue</h2>
+    <p>Add an element to the rear of the queue.</p>
+
+    <form method="POST">
+        <input type="hidden" name="action" value="enqueue">
+
+        <input
+            type="text"
+            name="value"
+            placeholder="Enter a value"
+            required
+        >
+
+        <button type="submit">Enqueue</button>
+    </form>
+
+    <hr>
+
+    <h2>Dequeue</h2>
+    <p>Remove the element at the front of the queue.</p>
+
+    <form method="POST">
+        <input type="hidden" name="action" value="dequeue">
+        <button type="submit">Dequeue</button>
+    </form>
+
+    <hr>
+
+    <h2>Peek Front Element</h2>
+
+    <form method="POST">
+        <input type="hidden" name="action" value="peek">
+        <button type="submit">Peek</button>
+    </form>
+
+    {% if front is not none %}
+        <p><strong>Front element:</strong> {{ front }}</p>
+    {% endif %}
+
+    <hr>
+
+    <h2>Current Queue</h2>
+
+    <p><strong>Queue Size:</strong> {{ size }}</p>
+
+    {% if items %}
+        <div class="queue-display">
+            <strong>FRONT</strong>
+
+            <div class="queue-items">
+                {% for item in items %}
+                    <div class="queue-item">
+                        {{ item }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <strong>REAR</strong>
+        </div>
+    {% else %}
+        <p>The queue is currently empty.</p>
+    {% endif %}
+
+    <hr>
+
+    <h2>Clear Queue</h2>
+
+    <form method="POST"
+          onsubmit="return confirm('Are you sure you want to clear the queue?');">
+        <input type="hidden" name="action" value="clear">
+        <button type="submit">Clear Queue</button>
+    </form>
+
+</div>
+
+{% endblock %}

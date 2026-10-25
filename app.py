@@ -295,6 +295,72 @@ def linkedlist():
             return redirect(url_for("linkedlist"))
     return render_template("linkedlist.html", items=linked.to_list(), size=linked.size, found=found)
 
+# ---------------- Queue (Enqueue and Dequeue) ----------------
+
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    def enqueue(self, value):
+        """Add an element to the rear of the queue."""
+        self.items.append(value)
+
+    def dequeue(self):
+        """Remove and return the front element."""
+        if self.is_empty():
+            return None
+        return self.items.pop(0)
+
+    def peek(self):
+        """Return the front element without removing it."""
+        if self.is_empty():
+            return None
+        return self.items[0]
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def clear(self):
+        self.items.clear()
+
+    def display(self):
+        return self.items.copy()
+
+
+# ---------------- Queue (Enqueue and Dequeue) ----------------
+
+queue_items = []
+
+@app.route("/works/queue", methods=["GET", "POST"])
+def queue_page():
+    message = None
+
+    if request.method == "POST":
+        action = request.form.get("action")
+        value = request.form.get("value", "").strip()
+
+        if action == "enqueue":
+            if value:
+                queue_items.append(value)
+                message = f"Successfully enqueued: {value}"
+            else:
+                message = "Please enter a value."
+
+        elif action == "dequeue":
+            if queue_items:
+                removed = queue_items.pop(0)
+                message = f"Successfully dequeued: {removed}"
+            else:
+                message = "Queue is empty!"
+
+    return render_template(
+        "touppercase.html",
+        queue_mode=True,
+        queue_items=queue_items,
+        message=message,
+        result=None,
+        original=""
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

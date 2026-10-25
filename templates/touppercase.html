@@ -1,17 +1,85 @@
 {% extends "base.html" %}
 {% block title %}Works{% endblock %}
+
 {% block content %}
 <section class="wrap narrow">
-  <h1>Programming works</h1>
-  {% include "_worktabs.html" %}
-  <div class="card tool">
-    <h2>Convert text to uppercase</h2>
-    <form method="post">
-      <label for="inputString">Your text</label>
-      <input id="inputString" name="inputString" value="{{ original }}" placeholder="Type something" autofocus>
-      <button class="btn primary">Convert to uppercase</button>
-    </form>
-    {% if result is not none %}<div class="result"><span>Result</span><strong>{{ result or 'Nothing was typed.' }}</strong></div>{% endif %}
-  </div>
+    <h1>Programming works</h1>
+
+    {% include "_worktabs.html" %}
+
+    {% if queue_mode %}
+
+    <div class="card tool">
+        <h2>Queue: Enqueue and Dequeue</h2>
+        <p>Queue follows FIFO (First In, First Out).</p>
+
+        <form method="post">
+            <label for="value">Enter a value</label>
+            <input id="value" name="value"
+                   placeholder="Type a value">
+
+            <button class="btn primary"
+                    name="action" value="enqueue">
+                Enqueue
+            </button>
+
+            <button class="btn primary"
+                    name="action" value="dequeue">
+                Dequeue
+            </button>
+        </form>
+
+        {% if message %}
+        <div class="result">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endif %}
+
+        <h3>Current Queue</h3>
+
+        {% if queue_items %}
+            <p><strong>FRONT →</strong></p>
+
+            <div class="result">
+                {% for item in queue_items %}
+                    <strong>{{ item }}</strong>
+                    {% if not loop.last %} → {% endif %}
+                {% endfor %}
+            </div>
+
+            <p><strong>← REAR</strong></p>
+        {% else %}
+            <p>The queue is empty.</p>
+        {% endif %}
+    </div>
+
+    {% else %}
+
+    <div class="card tool">
+        <h2>Convert text to uppercase</h2>
+
+        <form method="post">
+            <label for="inputString">Your text</label>
+
+            <input id="inputString"
+                   name="inputString"
+                   value="{{ original }}"
+                   placeholder="Type something"
+                   autofocus>
+
+            <button class="btn primary">
+                Convert to uppercase
+            </button>
+        </form>
+
+        {% if result is not none %}
+        <div class="result">
+            <span>Result</span>
+            <strong>{{ result or 'Nothing was typed.' }}</strong>
+        </div>
+        {% endif %}
+    </div>
+
+    {% endif %}
 </section>
 {% endblock %}
