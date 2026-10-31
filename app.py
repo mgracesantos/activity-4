@@ -362,5 +362,58 @@ def queue_page():
         original=""
     )
 
+# ---------------- Sorting (Bubble Sort) ----------------
+
+@app.route("/works/sorting", methods=["GET", "POST"])
+def sort_page():
+    original = ""
+    sorted_result = None
+    order = "ascending"
+    error = None
+
+    if request.method == "POST":
+        original = request.form.get("numbers", "").strip()
+        order = request.form.get("order", "ascending")
+
+        try:
+            numbers = [int(x.strip()) for x in original.split(",")]
+
+            if not original or not numbers:
+                raise ValueError
+
+            # Bubble Sort
+            sorted_numbers = numbers.copy()
+            n = len(sorted_numbers)
+
+            for i in range(n):
+                for j in range(0, n - i - 1):
+
+                    if order == "ascending":
+                        condition = sorted_numbers[j] > sorted_numbers[j + 1]
+                    else:
+                        condition = sorted_numbers[j] < sorted_numbers[j + 1]
+
+                    if condition:
+                        sorted_numbers[j], sorted_numbers[j + 1] = (
+                            sorted_numbers[j + 1],
+                            sorted_numbers[j]
+                        )
+
+            sorted_result = sorted_numbers
+
+        except ValueError:
+            error = "Please enter valid whole numbers separated by commas."
+
+    return render_template(
+        "touppercase.html",
+        sort_mode=True,
+        original=original,
+        sorted_result=sorted_result,
+        order=order,
+        error=error,
+        result=None
+    )
+
 if __name__ == "__main__":
     app.run(debug=True)
+

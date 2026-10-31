@@ -1,12 +1,40 @@
 {% set ep = request.endpoint %}
+
 <div class="tabs" role="tablist">
-  <a href="{{ url_for('works') }}" class="{{ 'on' if ep == 'works' }}">Uppercase</a>
-  <a href="{{ url_for('acircle') }}" class="{{ 'on' if ep == 'acircle' }}">Area of circle</a>
-  <a href="{{ url_for('atriangle') }}" class="{{ 'on' if ep == 'atriangle' }}">Area of triangle</a>
-  <a href="{{ url_for('linkedlist') }}" class="{{ 'on' if ep == 'linkedlist' }}">Linked list</a>
-  <a href="{{ url_for('infix') }}" class="{{ 'on' if ep == 'infix' }}">Infix to postfix</a>
-  <a href="{{ url_for('queue_page') }}"
-     class="{{ 'on' if ep == 'queue_page' }}">
-     Enqueue / Dequeue
-  </a>
+
+    <a href="{{ url_for('works') }}"
+       class="{{ 'on' if ep == 'works' }}">
+        Uppercase
+    </a>
+
+    <a href="{{ url_for('acircle') }}"
+       class="{{ 'on' if ep == 'acircle' }}">
+        Area of circle
+    </a>
+
+    <a href="{{ url_for('atriangle') }}"
+       class="{{ 'on' if ep == 'atriangle' }}">
+        Area of triangle
+    </a>
+
+    <a href="{{ url_for('linkedlist') }}"
+       class="{{ 'on' if ep == 'linkedlist' }}">
+        Linked list
+    </a>
+
+    <a href="{{ url_for('infix') }}"
+       class="{{ 'on' if ep == 'infix' }}">
+        Infix to postfix
+    </a>
+
+    <a href="{{ url_for('queue_page') }}"
+       class="{{ 'on' if ep == 'queue_page' }}">
+        Enqueue / Dequeue
+    </a>
+
+    <a href="{{ url_for('sort_page') }}"
+       class="{{ 'on' if ep == 'sort_page' }}">
+        Sorting
+    </a>
+
 </div>

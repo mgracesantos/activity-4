@@ -1,0 +1,87 @@
+
+{% extends "base.html" %}
+{% block title %}Sorting{% endblock %}
+
+{% block content %}
+
+<section class="wrap narrow">
+
+    <h1>Programming works</h1>
+
+    {% include "_worktabs.html" %}
+
+    <div class="card tool">
+
+        <h2>Sorting - Bubble Sort</h2>
+
+        <p>
+            Arrange numbers in ascending or descending order
+            using the Bubble Sort algorithm.
+        </p>
+
+        <form method="post">
+
+            <label for="numbers">Enter numbers</label>
+
+            <input
+                type="text"
+                id="numbers"
+                name="numbers"
+                value="{{ original }}"
+                placeholder="Example: 8, 3, 5, 1, 9"
+                required
+            >
+
+            <label for="order">Sorting Order</label>
+
+            <select id="order" name="order">
+
+                <option value="ascending"
+                    {% if order == 'ascending' %}selected{% endif %}>
+                    Ascending (Smallest to Largest)
+                </option>
+
+                <option value="descending"
+                    {% if order == 'descending' %}selected{% endif %}>
+                    Descending (Largest to Smallest)
+                </option>
+
+            </select>
+
+            <button class="btn primary" type="submit">
+                Sort Numbers
+            </button>
+
+        </form>
+
+        {% if error %}
+        <div class="result">
+            <strong>{{ error }}</strong>
+        </div>
+        {% endif %}
+
+        {% if sorted_result is not none %}
+
+        <div class="result">
+
+            <span>Original Numbers</span>
+
+            <strong>{{ original }}</strong>
+
+            <br>
+
+            <span>Sorted Numbers</span>
+
+            <strong>
+                {{ sorted_result | join(', ') }}
+            </strong>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
