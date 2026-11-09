@@ -414,6 +414,212 @@ def sort_page():
         result=None
     )
 
+
+# ---------------- Binary Search Tree ----------------
+
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+
+class BinarySearchTree:
+
+    def insert(self, root, key):
+        if root is None:
+            return TreeNode(key)
+
+        if key < root.value:
+            root.left = self.insert(root.left, key)
+
+        elif key > root.value:
+            root.right = self.insert(root.right, key)
+
+        return root
+
+    # Search method
+    def search(self, root, key):
+        if root is None or root.value == key:
+            return root
+
+        if key < root.value:
+            return self.search(root.left, key)
+
+        return self.search(root.right, key)
+
+    # Postorder Traversal method
+    def post_traversal(self, start, traversal):
+        if start:
+            self.post_traversal(start.left, traversal)
+            self.post_traversal(start.right, traversal)
+            traversal.append(start.value)
+
+        return traversal
+
+    # Find the smallest node
+    def min_value_node(self, root):
+        current = root
+
+        while current.left:
+            current = current.left
+
+        return current
+
+    # Delete Node method
+    def delete_node(self, root, key):
+        if root is None:
+            return root
+
+        if key < root.value:
+            root.left = self.delete_node(root.left, key)
+
+        elif key > root.value:
+            root.right = self.delete_node(root.right, key)
+
+        else:
+            # Node has no left child
+            if root.left is None:
+                return root.right
+
+            # Node has no right child
+            elif root.right is None:
+                return root.left
+
+            # Node has two children
+            temp = self.min_value_node(root.right)
+            root.value = temp.value
+            root.right = self.delete_node(
+                root.right, temp.value
+            )
+
+        return root
+
+
+# Create Binary Search Tree
+bst = BinarySearchTree()
+tree_root = None
+
+
+# Convert tree into a format for HTML display
+def tree_to_dict(root):
+    if root is None:
+        return None
+
+    return {
+        "value": root.value,
+        "left": tree_to_dict(root.left),
+        "right": tree_to_dict(root.right)
+    }
+def layout_tree(root, x_gap=60, y_gap=80, radius=22, margin=40):
+    """Calculate circle positions and branch lines for an SVG drawing."""
+    if root is None:
+        return None
+
+    nodes, edges = [], []
+    counter = [0]      # next free column (in-order position)
+    max_depth = [0]
+
+    def walk(node, depth):
+        if node is None:
+            return None
+        max_depth[0] = max(max_depth[0], depth)
+
+        left = walk(node.left, depth + 1)
+
+        me = {
+            "value": node.value,
+            "x": margin + counter[0] * x_gap,
+            "y": margin + depth * y_gap,
+        }
+        counter[0] += 1
+        nodes.append(me)
+
+        right = walk(node.right, depth + 1)
+
+        for child in (left, right):
+            if child:
+                edges.append({"x1": me["x"], "y1": me["y"],
+                              "x2": child["x"], "y2": child["y"]})
+        return me
+
+    walk(root, 0)
+
+    return {
+        "nodes": nodes,
+        "edges": edges,
+        "radius": radius,
+        "width": margin * 2 + (counter[0] - 1) * x_gap,
+        "height": margin * 2 + max_depth[0] * y_gap,
+    }
+
+
+# Binary Tree route
+@app.route("/works/binarytree", methods=["GET", "POST"])
+def binarytree():
+    global tree_root
+
+    message = None
+    error = None
+    show_tree = False
+
+    if request.method == "POST":
+        action = request.form.get("action")
+        raw = request.form.get("value", "").strip()
+
+        if action == "visualize":
+            show_tree = True
+
+        elif action == "postorder":
+            if tree_root is None:
+                error = "The tree is empty."
+            else:
+                result = bst.post_traversal(tree_root, [])
+                message = "Postorder traversal: " + ", ".join(map(str, result))
+            show_tree = True
+
+        elif action in ("insert", "search", "delete"):
+            try:
+                value = int(raw)
+            except ValueError:
+                value = None
+                error = "Please enter a whole number."
+
+            if value is not None:
+                if action == "insert":
+                    if bst.search(tree_root, value):
+                        error = f"{value} is already in the tree."
+                    else:
+                        tree_root = bst.insert(tree_root, value)
+                        message = f"Inserted {value}."
+
+                elif action == "search":
+                    if bst.search(tree_root, value):
+                        message = f"{value} was found in the tree."
+                    else:
+                        error = f"{value} is not in the tree."
+
+                elif action == "delete":
+                    if bst.search(tree_root, value):
+                        tree_root = bst.delete_node(tree_root, value)
+                        message = f"Deleted {value}."
+                    else:
+                        error = f"{value} is not in the tree."
+
+            show_tree = True
+
+        else:
+            error = "Unknown action."
+
+    # Runs for GET requests and after every POST branch
+    return render_template(
+        "binarytree.html",
+        message=message,
+        error=error,
+        show_tree=show_tree,
+        layout=layout_tree(tree_root),
+    )
+
 if __name__ == "__main__":
     app.run(debug=True)
 

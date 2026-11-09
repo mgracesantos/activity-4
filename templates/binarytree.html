@@ -1,0 +1,134 @@
+
+{% extends "base.html" %}
+
+{% block title %}Binary Tree{% endblock %}
+
+{% block content %}
+
+<section class="wrap narrow">
+
+    <h1>Binary Search Tree</h1>
+
+    {% include "_worktabs.html" %}
+
+    <!-- BINARY TREE OPERATIONS -->
+    <div class="card">
+
+        <h2>Binary Tree Operations</h2>
+
+        <p>
+            A Binary Search Tree (BST) is a data structure
+            where smaller values are placed on the left
+            and larger values are placed on the right.
+        </p>
+
+        <form method="POST">
+
+            <label for="value">Enter a number:</label>
+
+            <input
+                type="number"
+                id="value"
+                name="value"
+                placeholder="Enter a value"
+            >
+
+            <div class="tree-buttons">
+
+                <button type="submit" name="action"
+                        value="insert">
+                    Insert Node
+                </button>
+
+                <button type="submit" name="action"
+                        value="search">
+                    Search Node
+                </button>
+
+                <button type="submit" name="action"
+                        value="delete">
+                    Delete Node
+                </button>
+
+            </div>
+
+            <button type="submit" name="action"
+                    value="postorder">
+                Postorder Traversal
+            </button>
+
+            <button type="submit" name="action"
+                    value="visualize">
+                Visualize Tree
+            </button>
+
+        </form>
+
+        <!-- SUCCESS MESSAGE -->
+        {% if message %}
+            <div class="result">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <!-- ERROR MESSAGE -->
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+    </div>
+
+
+        <!-- BINARY TREE VISUALIZATION -->
+    {% if show_tree %}
+
+    <div class="card" id="tree-visualization">
+
+        <h2>Binary Tree Visualization</h2>
+
+        {% if layout %}
+
+            <div style="overflow-x: auto;">
+                <svg width="{{ layout.width }}"
+                     height="{{ layout.height }}"
+                     viewBox="0 0 {{ layout.width }} {{ layout.height }}"
+                     style="display: block; margin: 0 auto; max-width: none;">
+
+                    <!-- Branches (drawn first so circles sit on top) -->
+                    {% for e in layout.edges %}
+                        <line x1="{{ e.x1 }}" y1="{{ e.y1 }}"
+                              x2="{{ e.x2 }}" y2="{{ e.y2 }}"
+                              stroke="#888" stroke-width="2" />
+                    {% endfor %}
+
+                    <!-- Nodes -->
+                    {% for n in layout.nodes %}
+                        <circle cx="{{ n.x }}" cy="{{ n.y }}"
+                                r="{{ layout.radius }}"
+                                fill="#2563eb" stroke="#1e40af"
+                                stroke-width="2" />
+                        <text x="{{ n.x }}" y="{{ n.y }}"
+                              text-anchor="middle"
+                              dominant-baseline="central"
+                              fill="#ffffff" font-size="16"
+                              font-weight="600">{{ n.value }}</text>
+                    {% endfor %}
+
+                </svg>
+            </div>
+
+        {% else %}
+
+            <p>The Binary Search Tree is currently empty.</p>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
